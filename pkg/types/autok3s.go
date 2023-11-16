@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	"github.com/docker/go-connections/nat"
 )
 
 // AutoK3s struct for autok3s.
@@ -74,15 +76,16 @@ type Status struct {
 type Node struct {
 	SSH `json:",inline"`
 
-	InstanceID        string   `json:"instance-id,omitempty" yaml:"instance-id,omitempty"`
-	InstanceStatus    string   `json:"instance-status,omitempty" yaml:"instance-status,omitempty"`
-	PublicIPAddress   []string `json:"public-ip-address,omitempty" yaml:"public-ip-address,omitempty"`
-	InternalIPAddress []string `json:"internal-ip-address,omitempty" yaml:"internal-ip-address,omitempty"`
-	EipAllocationIds  []string `json:"eip-allocation-ids,omitempty" yaml:"eip-allocation-ids,omitempty"`
-	Master            bool     `json:"master,omitempty" yaml:"master,omitempty"`
-	RollBack          bool     `json:"-" yaml:"-"`
-	Current           bool     `json:"-" yaml:"-"`
-	Standalone        bool     `json:"standalone"`
+	InstanceID        string      `json:"instance-id,omitempty" yaml:"instance-id,omitempty"`
+	InstanceStatus    string      `json:"instance-status,omitempty" yaml:"instance-status,omitempty"`
+	PublicIPAddress   []string    `json:"public-ip-address,omitempty" yaml:"public-ip-address,omitempty"`
+	InternalIPAddress []string    `json:"internal-ip-address,omitempty" yaml:"internal-ip-address,omitempty"`
+	EipAllocationIds  []string    `json:"eip-allocation-ids,omitempty" yaml:"eip-allocation-ids,omitempty"`
+	Master            bool        `json:"master,omitempty" yaml:"master,omitempty"`
+	RollBack          bool        `json:"-" yaml:"-"`
+	Current           bool        `json:"-" yaml:"-"`
+	Standalone        bool        `json:"standalone"`
+	Ports             nat.PortMap `json:"ports"`
 
 	LocalHostname string `json:"local-hostname,omitempty" yaml:"local-hostname,omitempty"`
 }
